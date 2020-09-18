@@ -24,7 +24,7 @@ class Map_Obj():
         :param path: Path to .csv maps
         :return: the integer map and string map
         """
-
+        print(path)
         # Read map from provided csv file
         df = pd.read_csv(path, index_col=None, header=None)  # ,error_bad_lines=False)
         # Convert pandas dataframe to numpy array
@@ -323,9 +323,11 @@ def astar(maze, start, goal):
             # Check that node position is a walkable posistion
             maze_position = maze[node_position[0]][node_position[1]]
             if (
-                    maze_position != ' . '
+                    maze_position != ' . ' or maze_position != ' , ' or maze_position != ' : '
             ):
+                print("not walkable")
                 continue
+
             # Adding the new positions to the children array
             new_node = Node(current_node, node_position)
 
@@ -362,26 +364,26 @@ def astar(maze, start, goal):
 
 def main():
     # Specify which task
-    task = 1
+    task = 3
     # Initialise values with task value
     map = Map_Obj(task)
     # Finds start and goal as well as the path to the map we are using
-    start, goal, _, mapPath = map.fill_critical_positions(task)
+    start, goal, _, path = map.fill_critical_positions(task)
     print("start node:", tuple(start))
     print("goal node:", tuple(goal))
-    maze, str = map.read_map(mapPath)
+    maze, str = map.read_map(path)
     # listmaze = str.tolist()
-
+    print(path)
     # Find shortest path from start to goal
     goalPath = astar(str, tuple(start), tuple(goal))
     print(goalPath)
 
     i = 0
-    for pathPixel in goalPath:
-        i += 1
-        goalMap = map.set_cell_value(pathPixel, ' - ')
-        if i  == len(goalPath):
-            map.show_map(goalPath, goalMap)
+    #for pathPixel in goalPath:
+    #    i += 1
+    #    goalMap = map.set_cell_value(pathPixel, ' - ')
+    #    if i  == len(goalPath):
+    #        map.show_map(goalPath, goalMap)
 
 if __name__ == '__main__':
     main()
